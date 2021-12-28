@@ -1,13 +1,17 @@
+{% load render_bundle from webpack_loader %}
+
 <!doctype html>
 <html lang="ru">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        {% render_bundle 'main' 'css' %}
         <title>Блог | {% block title %}{% endblock %}</title>
     </head>
     <body>
         {% block navbar %}{% endblock %}
         {% block content %}{% endblock %}
         {% block modal %}{% endblock %}
+        {% render_bundle 'main' 'js' %}
     </body>
 </html>
