@@ -7,6 +7,11 @@ from . import views
 app_name = 'blogs'
 urlpatterns = [
     path(
+        '',
+        views.HomeView.as_view(),
+        name='home'
+    ),
+    path(
         'login/',
         views.BlogLoginView.as_view(),
         name='login'

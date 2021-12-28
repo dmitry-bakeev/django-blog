@@ -139,8 +139,9 @@ MEDIA_URL = '/media/'
 
 # Auth
 
-LOGOUT_REDIRECT_URL = 'users:login'
-LOGIN_URL = 'users:login'
+LOGIN_REDIRECT_URL = 'blogs:home'
+LOGOUT_REDIRECT_URL = 'blogs:login'
+LOGIN_URL = 'blogs:login'
 
 
 # Load local settings
