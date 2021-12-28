@@ -21,4 +21,9 @@ urlpatterns = [
         LogoutView.as_view(),
         name='logout'
     ),
+    path(
+        'post-create/',
+        views.PostCreateView.as_view(),
+        name='post-create'
+    ),
 ]

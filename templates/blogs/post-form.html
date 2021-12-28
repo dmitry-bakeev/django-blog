@@ -1,0 +1,47 @@
+{% extends 'empty.html' %}
+
+{% block title %}
+    Добавление поста
+{% endblock %}
+
+{% block content %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        <h1>Добавление поста</h1>
+
+        {% for error in form.non_field_errors %}
+            <p class="text-danger">{{ error }}</p>
+        {% endfor %}
+
+        <div class="form-group">
+            {{ form.title.label_tag }}
+            <input
+                class="form-control"
+                type="text"
+                name="{{ form.title.html_name }}"
+                id="{{ form.title.id_for_label }}"
+                value="{{ form.title.value|default_if_none:'' }}"
+                required
+            >
+            {% for error in form.title.errors %}
+                <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="form-group">
+            {{ form.text.label_tag }}
+            <textarea
+                class="form-control"
+                name="{{ form.text.html_name }}"
+                id="{{ form.text.id_for_label }}"
+                required
+            >{{ form.text.value|default_if_none:'' }}</textarea>
+            {% for error in form.text.errors %}
+                <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+    </form>
+
+{% endblock %}
