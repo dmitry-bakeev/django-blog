@@ -1,3 +1,5 @@
-from django.shortcuts import render
+from django.contrib.auth.views import LoginView
 
-# Create your views here.
+
+class BlogLoginView(LoginView):
+    template_name = 'blogs/login-form.html'

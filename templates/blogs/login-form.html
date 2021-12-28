@@ -1,0 +1,23 @@
+{% extends 'empty.html' %}
+
+{% block title %}
+    Вход
+{% endblock %}
+
+{% block content %}
+    <form action="" method="POST">
+        {% csrf_token %}
+
+        {% if user.is_authenticated %}
+            <p>
+                Вы вошли как {{ user }}, но у Вас не хватает прав для доступа к этой странице. Есть ли у вас другой аккаунт?
+            </p>
+        {% endif %}
+
+        {{ form.as_p }}
+
+        <p>
+            <button type="submit">Войти</button>
+        </p>
+    </form>
+{% endblock %}
