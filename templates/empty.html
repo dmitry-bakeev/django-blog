@@ -30,7 +30,7 @@
                             <span class="navbar-text">{{ request.user }}</span>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Выйти</a>
+                            <a class="nav-link" href="{% url 'blogs:logout' %}">Выйти</a>
                         </li>
                     </ul>
                 {% else %}

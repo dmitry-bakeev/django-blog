@@ -137,6 +137,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'
 
 
+# Auth
+
+LOGOUT_REDIRECT_URL = 'users:login'
+LOGIN_URL = 'users:login'
+
+
 # Load local settings
 
 try:
