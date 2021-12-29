@@ -12,4 +12,4 @@ def get_user_subscriptions_posts(blogs_qs):
 
     blogs_ids = blogs_qs.values_list('id', flat=True)
 
-    return Post.objects.filter(blog__id__in=blogs_ids)
+    return Post.objects.filter(blog__id__in=blogs_ids).select_related('blog')
