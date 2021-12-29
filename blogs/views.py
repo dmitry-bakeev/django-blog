@@ -9,6 +9,7 @@ from .models import Blog, Post, Subscription
 from .services import (
     get_user_subscriptions_blogs,
     get_user_subscriptions_posts,
+    unsubscribe_from_blog,
 )
 
 
@@ -70,7 +71,7 @@ class UnsubscribeBlogView(LoginRequiredMixin, generic.View):
         blog = get_object_or_404(Blog, pk=blog_pk)
 
         subscription = Subscription.objects.filter(user=request.user).first()
-        subscription.blogs.remove(blog)
+        unsubscribe_from_blog(subscription, blog)
 
         return redirect(request.POST.get('back', '/'))
 

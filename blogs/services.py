@@ -13,3 +13,12 @@ def get_user_subscriptions_posts(blogs_qs):
     blogs_ids = blogs_qs.values_list('id', flat=True)
 
     return Post.objects.filter(blog__id__in=blogs_ids).select_related('blog')
+
+
+def unsubscribe_from_blog(subscription, blog):
+    posts = blog.post_set.all()
+
+    subscription.blogs.remove(blog)
+
+    for post in posts:
+        subscription.read_posts.remove(post)
