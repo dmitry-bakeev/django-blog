@@ -1,4 +1,5 @@
 {% extends 'empty.html' %}
+{% load utils_extras %}
 
 {% block title %}
     Пост #{{ object.pk }}
@@ -6,6 +7,23 @@
 
 {% block content %}
     <h1>Пост #{{ object.pk }}</h1>
+
+    {% call_method post 'check_own' request.user as is_own %}
+
+    {% if is_own %}
+    <div class="mb-4">
+        <div class="btn-group">
+            <a
+                href="#id_post_delete"
+                data-toggle="modal"
+                class="btn btn-danger"
+            >
+                Удалить
+            </a>
+        </div>
+    </div>
+    {% endif %}
+
     <table class="table table-bordered">
         <tr>
             <th>Блог</th>
@@ -24,4 +42,29 @@
             <td>{{ object.created_at|date:'d.m.Y H:i:s' }}</td>
         </tr>
     </table>
+{% endblock %}
+
+{% block modal %}
+    <div class="modal fade" id="id_post_delete">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Подтвердить действие</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Вы уверены, что хотите удалить этот пост?</p>
+                </div>
+                <div class="modal-footer">
+                    <form action="{% url 'blogs:post-delete' pk=object.pk %}" method="POST">
+                        {% csrf_token %}
+                        <button class="btn btn-danger" type="submit">Да</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    </form>
+                </div>
+            </div> <!-- .modal-content -->
+        </div> <!-- .modal-dialog -->
+    </div> <!-- .modal -->
 {% endblock %}

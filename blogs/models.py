@@ -52,6 +52,14 @@ class Post(CreatedAtModel):
 
         return False
 
+    def check_own(self, user):
+        user_blog = Blog.objects.filter(user=user).prefetch_related('post_set').first()
+
+        if self in user_blog.post_set.all():
+            return True
+
+        return False
+
     def get_absolute_url(self):
         return reverse(
             'blogs:post-detail',

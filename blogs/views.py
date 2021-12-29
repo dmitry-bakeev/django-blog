@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse_lazy
 from django.views import generic
 
 from .forms import PostForm
@@ -118,3 +119,8 @@ class ReadPostListView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         subscription = Subscription.objects.filter(user=self.request.user).first()
         return subscription.read_posts.select_related('blog').all()
+
+
+class PostDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Post
+    success_url = reverse_lazy('blogs:own-posts')

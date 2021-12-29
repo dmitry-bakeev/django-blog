@@ -32,6 +32,11 @@ urlpatterns = [
         name='post-detail',
     ),
     path(
+        'post-detail/<int:pk>/delete/',
+        views.PostDeleteView.as_view(),
+        name='post-delete',
+    ),
+    path(
         'blogs/',
         views.BlogListView.as_view(),
         name='blogs',
