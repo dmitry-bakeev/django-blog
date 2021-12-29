@@ -8,7 +8,7 @@ def get_user_subscriptions_blogs(user):
 
 def get_user_subscriptions_posts(blogs_qs):
     if not blogs_qs:
-        return []
+        return Post.objects.none()
 
     blogs_ids = blogs_qs.values_list('id', flat=True)
 
