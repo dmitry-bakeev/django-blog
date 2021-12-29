@@ -109,3 +109,12 @@ class OwnPostListView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         blog = Blog.objects.filter(user=self.request.user).first()
         return self.model.objects.filter(blog=blog).order_by('-created_at')
+
+
+class ReadPostListView(LoginRequiredMixin, generic.ListView):
+    template_name = 'blogs/home.html'
+    paginate_by = 50
+
+    def get_queryset(self):
+        subscription = Subscription.objects.filter(user=self.request.user).first()
+        return subscription.read_posts.select_related('blog').all()

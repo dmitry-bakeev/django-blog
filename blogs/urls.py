@@ -61,4 +61,9 @@ urlpatterns = [
         views.OwnPostListView.as_view(),
         name='own-posts',
     ),
+    path(
+        'read-posts/',
+        views.ReadPostListView.as_view(),
+        name='read-posts',
+    ),
 ]
