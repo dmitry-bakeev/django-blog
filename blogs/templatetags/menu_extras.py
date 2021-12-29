@@ -1,6 +1,6 @@
 from django.template import Library
 
-from blogs.menu import UNATHORIZED_MENU, ATHORIZED_MENU
+from blogs.menu import AUTHORIZED_MENU, STAFF_EXTENDED_MENU, UNAUTHORIZED_MENU
 
 
 register = Library()
@@ -9,8 +9,11 @@ register = Library()
 @register.simple_tag(takes_context=True)
 def get_menu(context):
     request = context['request']
+    user = request.user
 
-    if request.user.is_authenticated:
-        return ATHORIZED_MENU
+    if user.is_authenticated:
+        if user.is_staff:
+            return AUTHORIZED_MENU + STAFF_EXTENDED_MENU
+        return AUTHORIZED_MENU
 
-    return UNATHORIZED_MENU
+    return UNAUTHORIZED_MENU
