@@ -56,4 +56,9 @@ urlpatterns = [
         views.UnreadPostView.as_view(),
         name='unread',
     ),
+    path(
+        'own-posts/',
+        views.OwnPostListView.as_view(),
+        name='own-posts',
+    ),
 ]

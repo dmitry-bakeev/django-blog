@@ -20,5 +20,6 @@ ATHORIZED_MENU = [
     MenuItem('Главная', reverse_lazy('blogs:home')),
     MenuItem('Добавить пост', reverse_lazy('blogs:post-create')),
     MenuItem('Список блогов', reverse_lazy('blogs:blogs')),
+    MenuItem('Мой блог', reverse_lazy('blogs:own-posts')),
     MenuItem('Выйти', reverse_lazy('blogs:logout'))
 ]

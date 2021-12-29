@@ -100,3 +100,12 @@ class UnreadPostView(LoginRequiredMixin, generic.View):
         subscription.read_posts.remove(post)
 
         return redirect(request.POST.get('back', '/'))
+
+
+class OwnPostListView(LoginRequiredMixin, generic.ListView):
+    template_name = 'blogs/own-post-list.html'
+    model = Post
+
+    def get_queryset(self):
+        blog = Blog.objects.filter(user=self.request.user).first()
+        return self.model.objects.filter(blog=blog).order_by('-created_at')

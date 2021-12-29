@@ -1,0 +1,36 @@
+{% extends 'empty.html' %}
+{% load utils_extras %}
+
+{% block title %}
+    Мой блог
+{% endblock %}
+
+{% block content %}
+    <h1>Мой блог</h1>
+    {% for post in post_list %}
+        <div class="alert alert-secondary mr-5">
+            <p>
+                <strong>
+                    <a href="{% url 'blogs:post-detail' pk=post.pk %}">{{ post.title }}</a>
+                </strong>
+            </p>
+            <hr>
+            <p>
+                {{ post.text }}
+            </p>
+            <hr>
+            <p class="mb-0 text-muted">
+                {{ post.created_at|date:'d.m.Y H:i:s'}}
+            </p>
+        </div>
+    {% empty %}
+        <div class="alert alert-warning">
+            <p>У Вас еще нет постов</p>
+        </div>
+    {% endfor %}
+
+    {% if is_paginated %}
+        {% include 'partial/pagination.html' with page_obj=page_obj %}
+    {% endif %}
+
+{% endblock %}
