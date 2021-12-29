@@ -1,4 +1,7 @@
+import os
+
 from pathlib import Path
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -13,14 +16,14 @@ EMAIL_TEMPLATE = BASE_DIR / 'templates' / 'blogs' / 'email.html'
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'edit-in-local_settings.py'
+SECRET_KEY = os.getenv('SECRET_KEY', 'secret_key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', '1') == '1'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
-SITE_ROOT = 'http://localhost:8000'
+SITE_ROOT = os.getenv('SITE_ROOT', 'http://localhost:8000')
 
 
 # Application definition
@@ -77,8 +80,12 @@ WSGI_APPLICATION = 'main.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.getenv('POSTGRES_DB', ''),
+        'USER': os.getenv('POSTGRES_USER', ''),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
+        'HOST': os.getenv('POSTGRES_HOST', ''),
+        'PORT': os.getenv('POSTGRES_PORT', ''),
     }
 }
 
@@ -108,9 +115,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
@@ -149,7 +156,7 @@ LOGIN_URL = 'blogs:login'
 
 # Celery
 
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', 'redis://localhost:6379/0')
 CELERY_WORKER_HIJACK_ROOT_LOGGER = False
 
 
@@ -157,10 +164,10 @@ CELERY_WORKER_HIJACK_ROOT_LOGGER = False
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-EMAIL_HOST = 'smtp.example.com'
+EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.example.com')
 EMAIL_PORT = 465
-EMAIL_HOST_USER = 'admin@example.com'
-EMAIL_HOST_PASSWORD = 'password'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'admin@example.com')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', 'password')
 EMAIL_USE_SSL = True
 
 DEFAULT_FROM_EMAIL = 'admin@example.com'
