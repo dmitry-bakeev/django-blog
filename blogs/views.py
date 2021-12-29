@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from django.views import generic
 
 from .forms import PostForm
-from .models import Post
+from .models import Blog, Post
 
 from .services import (
     get_user_subscriptions_blogs,
@@ -39,3 +39,13 @@ class PostCreateView(LoginRequiredMixin, generic.CreateView):
 class PostDetailView(LoginRequiredMixin, generic.DetailView):
     template_name_suffix = '-detail'
     model = Post
+
+
+class BlogListView(LoginRequiredMixin, generic.ListView):
+    template_name_suffix = '-list'
+    model = Blog
+    paginate_by = 50
+
+    def get_queryset(self):
+        qs = Blog.objects.exclude(user=self.request.user).select_related('user')
+        return qs

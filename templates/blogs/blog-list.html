@@ -1,0 +1,39 @@
+{% extends 'empty.html' %}
+{% load utils_extras %}
+
+{% block title %}
+    Список блогов
+{% endblock %}
+
+{% block content %}
+    <h1>Список блогов</h1>
+    <table class="table">
+        <thead>
+            <th scope="col" style="width: 10%;">#</th>
+            <th scope="col" style="width: 50%;">Блог</th>
+            <th scope="col" style="width: 40%;"></th>
+        </thead>
+        <tbody>
+            {% for blog in object_list %}
+                <tr>
+                    <th scope="row">{{ blog.id }}</th>
+                    <td>{{ blog }}</td>
+                    <td>
+                        {% call_method blog 'check_subscription' request.user as is_signed %}
+                        {% if is_signed %}
+                            <p class="text-muted">Вы подписаны
+                            <a class="text-info" href="#">Отписаться</a>
+                        {% else %}
+                            <a href="#" class="text-primary">Подписаться</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if is_paginated %}
+        {% include 'partial/pagination.html' with page_obj=page_obj %}
+    {% endif %}
+
+{% endblock %}

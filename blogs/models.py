@@ -20,6 +20,14 @@ class Blog(CreatedAtModel):
     def __str__(self):
         return f"{self.user}"
 
+    def check_subscription(self, user):
+        user_subscription = Subscription.objects.filter(user=user).prefetch_related('blogs').first()
+
+        if self in user_subscription.blogs.all():
+            return True
+
+        return False
+
     class Meta:
         verbose_name = 'блог'
         verbose_name_plural = 'блоги'

@@ -31,4 +31,9 @@ urlpatterns = [
         views.PostDetailView.as_view(),
         name='post-detail',
     ),
+    path(
+        'blogs/',
+        views.BlogListView.as_view(),
+        name='blogs',
+    )
 ]
