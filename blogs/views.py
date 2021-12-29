@@ -10,6 +10,7 @@ from .services import (
     get_user_subscriptions_blogs,
     get_user_subscriptions_posts,
     unsubscribe_from_blog,
+    get_user_subscriptions_unread_posts,
 )
 
 
@@ -24,7 +25,8 @@ class HomeView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         blogs = get_user_subscriptions_blogs(self.request.user)
         posts = get_user_subscriptions_posts(blogs)
-        return posts.order_by('-created_at')
+        unread_posts = get_user_subscriptions_unread_posts(self.request.user, posts)
+        return unread_posts.order_by('-created_at')
 
 
 class PostCreateView(LoginRequiredMixin, generic.CreateView):
