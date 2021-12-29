@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.db import transaction
 from django.db.models import signals
 from django.dispatch import receiver
 
@@ -36,4 +37,5 @@ def send_email_notify(instance, created, **kwargs):
     if not created:
         return
 
-    send_email_to_subscribers.delay(instance.pk)
+    transaction.on_commit(lambda: send_email_to_subscribers.delay(instance.pk))
+
