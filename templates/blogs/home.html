@@ -28,7 +28,7 @@
                     data-whatever="{{ post.blog.id }}"
                     data-field-id="#id_blog_pk"
                 >
-                    Отписаться
+                    Отписаться от {{ post.blog }}
                 </a>
                 <br>
                 {% call_method post 'check_read' request.user as is_read %}
