@@ -170,7 +170,7 @@ EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'admin@example.com')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', 'password')
 EMAIL_USE_SSL = True
 
-DEFAULT_FROM_EMAIL = 'admin@example.com'
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'admin@example.com')
 
 
 # Load local settings
