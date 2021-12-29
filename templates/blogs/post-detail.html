@@ -1,0 +1,27 @@
+{% extends 'empty.html' %}
+
+{% block title %}
+    Пост #{{ object.pk }}
+{% endblock %}
+
+{% block content %}
+    <h1>Пост #{{ object.pk }}</h1>
+    <table class="table table-bordered">
+        <tr>
+            <th>Блог</th>
+            <td>{{ object.blog }}</td>
+        </tr>
+        <tr>
+            <th>Заголовок</th>
+            <td>{{ object.title }}</td>
+        </tr>
+        <tr>
+            <th>Текст</th>
+            <td>{{ object.text }}</td>
+        </tr>
+        <tr>
+            <th>Когда добавлен</th>
+            <td>{{ object.created_at|date:'d.m.Y H:i:s' }}</td>
+        </tr>
+    </table>
+{% endblock %}

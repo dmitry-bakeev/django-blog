@@ -34,3 +34,8 @@ class PostCreateView(LoginRequiredMixin, generic.CreateView):
     def form_valid(self, form):
         self.object = form.save(user=self.request.user)
         return redirect(self.get_success_url())
+
+
+class PostDetailView(LoginRequiredMixin, generic.DetailView):
+    template_name_suffix = '-detail'
+    model = Post
