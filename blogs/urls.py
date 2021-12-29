@@ -35,5 +35,15 @@ urlpatterns = [
         'blogs/',
         views.BlogListView.as_view(),
         name='blogs',
-    )
+    ),
+    path(
+        'subscribe/',
+        views.SubscribeBlogView.as_view(),
+        name='subscribe',
+    ),
+    path(
+        'unsubscribe/',
+        views.UnsubscribeBlogView.as_view(),
+        name='unsubscribe',
+    ),
 ]

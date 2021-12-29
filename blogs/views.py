@@ -1,10 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
-from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.views import generic
 
 from .forms import PostForm
-from .models import Blog, Post
+from .models import Blog, Post, Subscription
 
 from .services import (
     get_user_subscriptions_blogs,
@@ -49,3 +49,27 @@ class BlogListView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         qs = Blog.objects.exclude(user=self.request.user).select_related('user')
         return qs
+
+
+class SubscribeBlogView(LoginRequiredMixin, generic.View):
+
+    def post(self, request):
+        blog_pk = request.POST.get('blog_pk')
+        blog = get_object_or_404(Blog, pk=blog_pk)
+
+        subscription = Subscription.objects.filter(user=request.user).first()
+        subscription.blogs.add(blog)
+
+        return redirect(request.POST.get('back', '/'))
+
+
+class UnsubscribeBlogView(LoginRequiredMixin, generic.View):
+
+    def post(self, request):
+        blog_pk = request.POST.get('blog_pk')
+        blog = get_object_or_404(Blog, pk=blog_pk)
+
+        subscription = Subscription.objects.filter(user=request.user).first()
+        subscription.blogs.remove(blog)
+
+        return redirect(request.POST.get('back', '/'))

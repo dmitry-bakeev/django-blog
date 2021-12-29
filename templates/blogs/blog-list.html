@@ -22,9 +22,23 @@
                         {% call_method blog 'check_subscription' request.user as is_signed %}
                         {% if is_signed %}
                             <p class="text-muted">Вы подписаны
-                            <a class="text-info" href="#">Отписаться</a>
+                            <a
+                                href="#id_unsubscribe_blog"
+                                data-toggle="modal"
+                                data-whatever="{{ blog.id }}"
+                                data-field-id="#id_blog_pk"
+                            >
+                                Отписаться
+                            </a>
                         {% else %}
-                            <a href="#" class="text-primary">Подписаться</a>
+                            <a
+                                href="#id_subscribe_blog"
+                                data-toggle="modal"
+                                data-whatever="{{ blog.id }}"
+                                data-field-id="#id_blog_pk"
+                            >
+                                Подписаться
+                            </a>
                         {% endif %}
                     </td>
                 </tr>
@@ -36,4 +50,56 @@
         {% include 'partial/pagination.html' with page_obj=page_obj %}
     {% endif %}
 
+{% endblock %}
+
+{% block modal %}
+    <div class="modal fade SetModalValue" id="id_subscribe_blog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Подтвердить действие</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Вы действительно хотите подписаться на этот блог?</p>
+                </div>
+                <div class="modal-footer">
+                    <form action="{% url 'blogs:subscribe' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="blog_pk" id="id_blog_pk">
+                        <input type="hidden" name="back", value="{{ request.path }}">
+                        <button class="btn btn-primary" type="submit">Да</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    </form>
+                </div>
+            </div> <!-- .modal-content -->
+        </div> <!-- .modal-dialog -->
+    </div> <!-- .modal -->
+
+    <div class="modal fade SetModalValue" id="id_unsubscribe_blog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Подтвердить действие</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Вы действительно хотите отписаться от этого блога?</p>
+                </div>
+                <div class="modal-footer">
+                    <form action="{% url 'blogs:unsubscribe' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="blog_pk" id="id_blog_pk">
+                        <input type="hidden" name="back", value="{{ request.path }}">
+                        <button class="btn btn-danger" type="submit">Да</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    </form>
+                </div>
+            </div> <!-- .modal-content -->
+        </div> <!-- .modal-dialog -->
+    </div> <!-- .modal -->
 {% endblock %}
