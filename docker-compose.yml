@@ -1,0 +1,77 @@
+version: '3.9'
+services:
+  db:
+    image: postgres:13.3-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=blog_user
+      - POSTGRES_PASSWORD=blog_password
+      - POSTGRES_DB=blog_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    depends_on:
+      - db
+    image: backend:latest
+    restart: always
+    environment:
+      - SECRET_KEY=blog_secret
+      - DEBUG=0
+      - SITE_ROOT=http://localhost
+      - POSTGRES_PASSWORD=blog_password
+      - POSTGRES_USER=blog_user
+      - POSTGRES_DB=blog_db
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - EMAIL_HOST=smtp.example.com
+      - EMAIL_HOST_USER=admin@example.com
+      - EMAIL_HOST_PASSWORD=password
+      - DEFAULT_FROM_EMAIL=admin@example.com
+      - WORKERS=2
+    volumes:
+      - static:/app/staticfiles:rw
+      - media:/app/media:rw
+
+  celery_worker:
+    image: backend:latest
+    command: celery worker -l info
+    restart: always
+    environment:
+      - CELERY_APP=main
+      - SECRET_KEY=blog_secret
+      - DEBUG=0
+      - SITE_ROOT=http://localhost
+      - POSTGRES_PASSWORD=blog_password
+      - POSTGRES_USER=blog_user
+      - POSTGRES_DB=blog_db
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - EMAIL_HOST=smtp.example.com
+      - EMAIL_HOST_USER=admin@example.com
+      - EMAIL_HOST_PASSWORD=password
+      - DEFAULT_FROM_EMAIL=admin@example.com
+      - WORKERS=2
+    volumes:
+      - static:/app/staticfiles:rw
+      - media:/app/media:rw
+
+  redis:
+    image: redis:6.2-alpine
+    restart: always
+
+  frontend:
+    image: frontend:latest
+    restart: always
+    volumes:
+      - static:/app/staticfiles:ro
+      - media:/app/media:ro
+    ports:
+      - '80:80'
+
+volumes:
+  pgdata: {}
+  static: {}
+  media: {}
