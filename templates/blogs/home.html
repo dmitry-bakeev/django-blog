@@ -1,4 +1,5 @@
 {% extends 'empty.html' %}
+{% load utils_extras %}
 
 {% block title %}
     Домашняя страница
@@ -29,6 +30,28 @@
                 >
                     Отписаться
                 </a>
+                <br>
+                {% call_method post 'check_read' request.user as is_read %}
+                {% if is_read %}
+                    <span class="">Пост прочитан</span>
+                    <a
+                        href="#id_unread_post"
+                        data-toggle="modal"
+                        data-whatever="{{ post.id }}"
+                        data-field-id="#id_post_pk"
+                    >
+                        Отметить непрочитанным
+                    </a>
+                {% else %}
+                    <a
+                        href="#id_read_post"
+                        data-toggle="modal"
+                        data-whatever="{{ post.id }}"
+                        data-field-id="#id_post_pk"
+                    >
+                        Отметить прочитанным
+                    </a>
+                {% endif %}
             </p>
         </div>
     {% empty %}
@@ -60,6 +83,56 @@
                     <form action="{% url 'blogs:unsubscribe' %}" method="POST">
                         {% csrf_token %}
                         <input type="hidden" name="blog_pk" id="id_blog_pk">
+                        <input type="hidden" name="back", value="{{ request.path }}">
+                        <button class="btn btn-danger" type="submit">Да</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    </form>
+                </div>
+            </div> <!-- .modal-content -->
+        </div> <!-- .modal-dialog -->
+    </div> <!-- .modal -->
+
+    <div class="modal fade SetModalValue" id="id_read_post">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Подтвердить действие</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Вы действительно хотите отметить этот пост прочитанным?</p>
+                </div>
+                <div class="modal-footer">
+                    <form action="{% url 'blogs:read' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="post_pk" id="id_post_pk">
+                        <input type="hidden" name="back", value="{{ request.path }}">
+                        <button class="btn btn-primary" type="submit">Да</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    </form>
+                </div>
+            </div> <!-- .modal-content -->
+        </div> <!-- .modal-dialog -->
+    </div> <!-- .modal -->
+
+    <div class="modal fade SetModalValue" id="id_unread_post">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Подтвердить действие</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Вы действительно хотите отметить этот пост непрочитанным?</p>
+                </div>
+                <div class="modal-footer">
+                    <form action="{% url 'blogs:unread' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="post_pk" id="id_post_pk">
                         <input type="hidden" name="back", value="{{ request.path }}">
                         <button class="btn btn-danger" type="submit">Да</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>

@@ -44,6 +44,14 @@ class Post(CreatedAtModel):
     def __str__(self):
         return f"{self.blog} / {self.title} / {self.created_at.strftime('%d.%m.%Y')}"
 
+    def check_read(self, user):
+        user_subscription = Subscription.objects.filter(user=user).prefetch_related('read_posts').first()
+
+        if self in user_subscription.read_posts.all():
+            return True
+
+        return False
+
     def get_absolute_url(self):
         return reverse(
             'blogs:post-detail',
@@ -61,6 +69,8 @@ class Post(CreatedAtModel):
 class Subscription(CreatedAtModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='пользователь')
     blogs = models.ManyToManyField('Blog', verbose_name='блоги')
+
+    read_posts = models.ManyToManyField('Post', verbose_name='прочитанные посты')
 
     def __str__(self):
         return f"{self.user}"

@@ -73,3 +73,27 @@ class UnsubscribeBlogView(LoginRequiredMixin, generic.View):
         subscription.blogs.remove(blog)
 
         return redirect(request.POST.get('back', '/'))
+
+
+class ReadPostView(LoginRequiredMixin, generic.View):
+
+    def post(self, request):
+        post_pk = request.POST.get('post_pk')
+        post = get_object_or_404(Post, pk=post_pk)
+
+        subscription = Subscription.objects.filter(user=request.user).first()
+        subscription.read_posts.add(post)
+
+        return redirect(request.POST.get('back', '/'))
+
+
+class UnreadPostView(LoginRequiredMixin, generic.View):
+
+    def post(self, request):
+        post_pk = request.POST.get('post_pk')
+        post = get_object_or_404(Post, pk=post_pk)
+
+        subscription = Subscription.objects.filter(user=request.user).first()
+        subscription.read_posts.remove(post)
+
+        return redirect(request.POST.get('back', '/'))

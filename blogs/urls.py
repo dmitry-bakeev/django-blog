@@ -46,4 +46,14 @@ urlpatterns = [
         views.UnsubscribeBlogView.as_view(),
         name='unsubscribe',
     ),
+    path(
+        'read/',
+        views.ReadPostView.as_view(),
+        name='read',
+    ),
+    path(
+        'unread/',
+        views.UnreadPostView.as_view(),
+        name='unread',
+    ),
 ]
