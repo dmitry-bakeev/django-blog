@@ -1,0 +1,13 @@
+{% extends 'empty-email.html' %}
+
+{% block content %}
+    <p>
+        Привет!
+    </p>
+    <p>
+        В блог <strong>{{ post.blog }}</strong> добавлен новый пост с заголовком {{ post.title }}.
+    </p>
+    <p>
+        <a href="{{ domain}}{{ post.get_absolute_url }}">Перейти к просмотру.</a>
+    </p>
+{% endblock %}

@@ -6,6 +6,7 @@ TEMPLATE_DIR = BASE_DIR / 'templates'
 MEDIA_ROOT = BASE_DIR / 'media'
 STATIC_DIR = BASE_DIR / 'static'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+EMAIL_TEMPLATE = BASE_DIR / 'templates' / 'blogs' / 'email.html'
 
 
 # Quick-start development settings - unsuitable for production
@@ -18,6 +19,8 @@ SECRET_KEY = 'edit-in-local_settings.py'
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+SITE_ROOT = 'http://localhost:8000'
 
 
 # Application definition
@@ -142,6 +145,25 @@ MEDIA_URL = '/media/'
 LOGIN_REDIRECT_URL = 'blogs:home'
 LOGOUT_REDIRECT_URL = 'blogs:login'
 LOGIN_URL = 'blogs:login'
+
+
+# Celery
+
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_WORKER_HIJACK_ROOT_LOGGER = False
+
+
+# Email settings
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = 'smtp.example.com'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'admin@example.com'
+EMAIL_HOST_PASSWORD = 'password'
+EMAIL_USE_SSL = True
+
+DEFAULT_FROM_EMAIL = 'admin@example.com'
 
 
 # Load local settings
