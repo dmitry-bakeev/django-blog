@@ -1,5 +1,5 @@
 # django-blog
-This is the solution of a test task for the position of Django backend developer
+This is the solution of a [test task](https://docs.google.com/document/d/1oS2m4lLskCUQCUpPqzwcS8mcPCAvlBLqUM6u-cHc_38/edit) for the position of Django backend developer
 
 Requirements:
  - git
@@ -29,6 +29,8 @@ docker build . -f frontend.Dockerfile -t frontend:latest
 
 3. Edit `./docker-compose.yml`. Set your own environments for backend and celery_worker services:
 
+- `SITE_ROOT` - using for generate link in email, you can set public IP or domain name
+
 - `EMAIL_HOST`
 
 - `EMAIL_HOST_USER`
@@ -48,6 +50,6 @@ docker-compose up -d
 ./manage.sh createsuperuser
 ```
 
-6. Open url `http://localhost`
+6. Open url `http://localhost`. if you change `SITE_ROOT` open your public IP or domain name
 
 7. Enjoy
