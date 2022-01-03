@@ -13,7 +13,7 @@ services:
   backend:
     depends_on:
       - db
-    image: backend:latest
+    image: ghcr.io/dmitry-bakeev/django-blog/backend:latest
     restart: always
     environment:
       - SECRET_KEY=blog_secret
@@ -35,7 +35,7 @@ services:
       - media:/app/media:rw
 
   celery_worker:
-    image: backend:latest
+    image: ghcr.io/dmitry-bakeev/django-blog/backend:latest
     command: celery worker -l info
     restart: always
     environment:
@@ -63,7 +63,7 @@ services:
     restart: always
 
   frontend:
-    image: frontend:latest
+    image: ghcr.io/dmitry-bakeev/django-blog/frontend:latest
     restart: always
     volumes:
       - static:/app/staticfiles:ro

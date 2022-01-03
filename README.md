@@ -5,7 +5,7 @@ Requirements:
  - git
  - docker and docker-compose
 
-How to run
+How to run:
 
 1. Clone this repo
 
@@ -17,17 +17,7 @@ git clone https://github.com/dmitry-bakeev/django-blog.git
 git clone git@github.com:dmitry-bakeev/django-blog.git
 ```
 
-2. Build images
-
-```bash
-# backend
-docker build . -f backend.Dockerfile -t backend:latest
-
-# frontend
-docker build . -f frontend.Dockerfile -t frontend:latest
-```
-
-3. Edit `./docker-compose.yml`. Set your own environments for backend and celery_worker services:
+2. Edit `./docker-compose.yml`. Set your own environments for backend and celery_worker services:
 
 - `SITE_ROOT` - using for generate link in email, you can set public IP or domain name
 
@@ -39,17 +29,18 @@ docker build . -f frontend.Dockerfile -t frontend:latest
 
 - `DEFAULT_FROM_EMAIL`
 
-4. Run project
+3. Run project
 
 ```bash
 docker-compose up -d
 ```
 
-5. Create first user
-```
+4. Create first user
+
+```bash
 ./manage.sh createsuperuser
 ```
 
-6. Open url `http://localhost`. if you change `SITE_ROOT` open your public IP or domain name
+5. Open url `http://localhost`. if you change `SITE_ROOT` open your public IP or domain name
 
-7. Enjoy
+6. Enjoy
