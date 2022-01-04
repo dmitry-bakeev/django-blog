@@ -1,14 +1,16 @@
 from django import forms
 
-from .models import Post, Blog
+from .models import Post
+
+from .services import get_user_blog
 
 
 class PostForm(forms.ModelForm):
 
     def save(self, user, commit=True):
         post = super().save(commit=False)
-        blog = Blog.objects.filter(user=user).first()
-        post.blog = blog
+        user_blog = get_user_blog(user=user)
+        post.blog = user_blog
 
         if commit:
             post.save()

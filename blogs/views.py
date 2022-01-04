@@ -5,9 +5,10 @@ from django.urls import reverse_lazy
 from django.views import generic
 
 from .forms import PostForm
-from .models import Blog, Post, Subscription
+from .models import Blog, Post
 
 from .services import (
+    get_user_blog,
     get_user_subscription,
     get_user_subscriptions_blogs,
     get_user_subscriptions_posts,
@@ -117,8 +118,8 @@ class OwnPostListView(LoginRequiredMixin, generic.ListView):
     model = Post
 
     def get_queryset(self):
-        blog = Blog.objects.filter(user=self.request.user).first()
-        return self.model.objects.filter(blog=blog).order_by('-created_at')
+        user_blog = get_user_blog(self.request.user)
+        return self.model.objects.filter(blog=user_blog).order_by('-created_at')
 
 
 class ReadPostListView(LoginRequiredMixin, generic.ListView):

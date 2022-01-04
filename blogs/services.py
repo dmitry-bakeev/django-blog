@@ -4,7 +4,11 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
-from .models import Post, Subscription
+from .models import Blog, Post, Subscription
+
+
+def get_user_blog(user):
+    return Blog.objects.filter(user=user).first()
 
 
 def get_user_subscription(user):
