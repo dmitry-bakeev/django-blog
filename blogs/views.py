@@ -52,6 +52,13 @@ class BlogListView(LoginRequiredMixin, generic.ListView):
     model = Blog
     paginate_by = 50
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_subscription = get_user_subscription(self.request.user)
+        blogs = get_user_subscriptions_blogs(user_subscription)
+        context.update({'subscription_blogs': blogs})
+        return context
+
     def get_queryset(self):
         qs = Blog.objects.exclude(user=self.request.user).select_related('user')
         return qs

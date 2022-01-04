@@ -20,10 +20,8 @@ class Blog(CreatedAtModel):
     def __str__(self):
         return f"{self.user}"
 
-    def check_subscription(self, user):
-        user_subscription = Subscription.objects.filter(user=user).prefetch_related('blogs').first()
-
-        if self in user_subscription.blogs.all():
+    def check_subscription(self, subscription_blogs):
+        if self in subscription_blogs:
             return True
 
         return False

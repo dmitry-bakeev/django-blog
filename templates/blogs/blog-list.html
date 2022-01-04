@@ -19,7 +19,7 @@
                     <th scope="row">{{ blog.id }}</th>
                     <td>{{ blog }}</td>
                     <td>
-                        {% call_method blog 'check_subscription' request.user as is_signed %}
+                        {% call_method blog 'check_subscription' subscription_blogs as is_signed %}
                         {% if is_signed %}
                             <p class="text-muted">Вы подписаны
                             <a
