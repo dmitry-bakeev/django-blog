@@ -27,7 +27,15 @@
     <table class="table table-bordered">
         <tr>
             <th>Блог</th>
-            <td>{{ object.blog }}</td>
+            <td>
+                <a
+                    {% if is_own %}
+                        href="{% url 'blogs:blog-posts' %}"
+                    {% else %}
+                        href="{% url 'blogs:blog-posts' %}?blog_pk={{ object.blog.pk }}"
+                    {% endif %}
+                    >{{ object.blog }}</a>
+            </td>
         </tr>
         <tr>
             <th>Заголовок</th>

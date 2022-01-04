@@ -128,12 +128,28 @@ class UnreadPostView(LoginRequiredMixin, generic.View):
         return redirect(request.POST.get('back', '/'))
 
 
-class OwnPostListView(LoginRequiredMixin, generic.ListView):
-    template_name = 'blogs/own-post-list.html'
+class BlogPostListView(LoginRequiredMixin, generic.ListView):
+    template_name = 'blogs/blog-post-list.html'
     model = Post
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'own_blog': self.own_blog,
+            'user_blog': self.user_blog
+        })
+        return context
+
     def get_queryset(self):
-        user_blog = get_user_blog(self.request.user)
+        blog_pk = self.request.GET.get('blog_pk')
+        if blog_pk:
+            user_blog = get_object_or_404(Blog, pk=blog_pk)
+            self.own_blog = 0
+        else:
+            user_blog = get_user_blog(self.request.user)
+            self.own_blog = 1
+
+        self.user_blog = user_blog
         return self.model.objects.filter(blog=user_blog).order_by('-created_at')
 
 

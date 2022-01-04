@@ -62,9 +62,9 @@ urlpatterns = [
         name='unread',
     ),
     path(
-        'own-posts/',
-        views.OwnPostListView.as_view(),
-        name='own-posts',
+        'blog-posts/',
+        views.BlogPostListView.as_view(),
+        name='blog-posts',
     ),
     path(
         'read-posts/',

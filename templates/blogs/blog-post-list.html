@@ -2,11 +2,19 @@
 {% load utils_extras %}
 
 {% block title %}
-    Мой блог
+    {% if own_blog %}
+        Мой блог
+    {% else %}
+        Просмотр блога: {{ user_blog }}
+    {% endif %}
 {% endblock %}
 
 {% block content %}
-    <h1>Мой блог</h1>
+    {% if own_blog %}
+        <h1>Мой блог</h1>
+    {% else %}
+        <h1>Просмотр блога: {{ user_blog }}</h1>
+    {% endif %}
     {% for post in post_list %}
         <div class="alert alert-secondary mr-5">
             <p>
@@ -25,7 +33,11 @@
         </div>
     {% empty %}
         <div class="alert alert-warning">
-            <p>У Вас еще нет постов</p>
+            {% if own_blog %}
+                <p>У Вас еще нет постов</p>
+            {% else %}
+                <p>В этом блоге еще нет постов</p>
+            {% endif %}
         </div>
     {% endfor %}
 
