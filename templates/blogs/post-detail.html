@@ -8,20 +8,20 @@
 {% block content %}
     <h1>Пост #{{ object.pk }}</h1>
 
-    {% call_method post 'check_own' request.user as is_own %}
+    {% call_method post 'check_own' user_blog as is_own %}
 
     {% if is_own %}
-    <div class="mb-4">
-        <div class="btn-group">
-            <a
-                href="#id_post_delete"
-                data-toggle="modal"
-                class="btn btn-danger"
-            >
-                Удалить
-            </a>
+        <div class="mb-4">
+            <div class="btn-group">
+                <a
+                    href="#id_post_delete"
+                    data-toggle="modal"
+                    class="btn btn-danger"
+                >
+                    Удалить
+                </a>
+            </div>
         </div>
-    </div>
     {% endif %}
 
     <table class="table table-bordered">

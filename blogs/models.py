@@ -52,12 +52,9 @@ class Post(CreatedAtModel):
 
         return False
 
-    def check_own(self, user):
-        from .services import get_user_blog
+    def check_own(self, user_blog):
 
-        user_blog = get_user_blog(user)
-
-        if self in user_blog.post_set.all():
+        if self.blog == user_blog:
             return True
 
         return False

@@ -47,6 +47,14 @@ class PostDetailView(LoginRequiredMixin, generic.DetailView):
     template_name_suffix = '-detail'
     model = Post
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_blog = get_user_blog(self.request.user)
+        context.update({
+            'user_blog': user_blog
+        })
+        return context
+
 
 class BlogListView(LoginRequiredMixin, generic.ListView):
     template_name_suffix = '-list'
