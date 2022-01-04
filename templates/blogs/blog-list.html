@@ -17,7 +17,9 @@
             {% for blog in object_list %}
                 <tr>
                     <th scope="row">{{ blog.id }}</th>
-                    <td>{{ blog }}</td>
+                    <td>
+                        <a href="{% url 'blogs:blog-posts' %}?blog_pk={{ blog.pk }}">{{ blog }}</a>
+                    </td>
                     <td>
                         {% call_method blog 'check_subscription' subscription_blogs as is_signed %}
                         {% if is_signed %}
