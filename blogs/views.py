@@ -8,6 +8,7 @@ from .forms import PostForm
 from .models import Blog, Post, Subscription
 
 from .services import (
+    get_user_subscription,
     get_user_subscriptions_blogs,
     get_user_subscriptions_posts,
     unsubscribe_from_blog,
@@ -24,9 +25,10 @@ class HomeView(LoginRequiredMixin, generic.ListView):
     paginate_by = 50
 
     def get_queryset(self):
-        blogs = get_user_subscriptions_blogs(self.request.user)
+        user_subscription = get_user_subscription(self.request.user)
+        blogs = get_user_subscriptions_blogs(user_subscription)
         posts = get_user_subscriptions_posts(blogs)
-        unread_posts = get_user_subscriptions_unread_posts(self.request.user, posts)
+        unread_posts = get_user_subscriptions_unread_posts(user_subscription, posts)
         return unread_posts.order_by('-created_at')
 
 
