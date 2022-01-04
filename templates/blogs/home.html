@@ -2,11 +2,11 @@
 {% load utils_extras %}
 
 {% block title %}
-    Домашняя страница
+    {{ title|default:'Главная' }}
 {% endblock %}
 
 {% block content %}
-    <h1>Домашняя страница</h1>
+    <h1>{{ title|default:'Главная' }}</h1>
     {% for post in post_list %}
         <div class="alert alert-secondary mr-5">
             <p>

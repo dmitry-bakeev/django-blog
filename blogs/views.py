@@ -125,6 +125,13 @@ class ReadPostListView(LoginRequiredMixin, generic.ListView):
     template_name = 'blogs/home.html'
     paginate_by = 50
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'title': 'Просмотренные посты'
+        })
+        return context
+
     def get_queryset(self):
         subscription = Subscription.objects.filter(user=self.request.user).first()
         return subscription.read_posts.select_related('blog').all()
