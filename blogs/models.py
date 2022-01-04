@@ -42,11 +42,7 @@ class Post(CreatedAtModel):
     def __str__(self):
         return f"{self.blog} / {self.title} / {self.created_at.strftime('%d.%m.%Y')}"
 
-    def check_read(self, user):
-        from .services import get_user_subscription
-
-        user_subscription = get_user_subscription(user)
-
+    def check_read(self, user_subscription):
         if self in user_subscription.read_posts.all():
             return True
 

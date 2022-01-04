@@ -25,11 +25,18 @@ class HomeView(LoginRequiredMixin, generic.ListView):
     template_name = 'blogs/home.html'
     paginate_by = 50
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'user_subscription': self.user_subscription,
+        })
+        return context
+
     def get_queryset(self):
-        user_subscription = get_user_subscription(self.request.user)
-        blogs = get_user_subscriptions_blogs(user_subscription)
+        self.user_subscription = get_user_subscription(self.request.user)
+        blogs = get_user_subscriptions_blogs(self.user_subscription)
         posts = get_user_subscriptions_posts(blogs)
-        unread_posts = get_user_subscriptions_unread_posts(user_subscription, posts)
+        unread_posts = get_user_subscriptions_unread_posts(self.user_subscription, posts)
         return unread_posts.order_by('-created_at')
 
 
@@ -137,13 +144,14 @@ class ReadPostListView(LoginRequiredMixin, generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            'title': 'Просмотренные посты'
+            'title': 'Просмотренные посты',
+            'user_subscription': self.user_subscription
         })
         return context
 
     def get_queryset(self):
-        user_subscription = get_user_subscription(self.request.user)
-        return user_subscription.read_posts.select_related('blog').all()
+        self.user_subscription = get_user_subscription(self.request.user)
+        return self.user_subscription.read_posts.select_related('blog').all()
 
 
 class PostDeleteView(LoginRequiredMixin, generic.DeleteView):

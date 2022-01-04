@@ -31,7 +31,7 @@
                     Отписаться от {{ post.blog }}
                 </a>
                 <br>
-                {% call_method post 'check_read' request.user as is_read %}
+                {% call_method post 'check_read' user_subscription as is_read %}
                 {% if is_read %}
                     <span class="">Пост прочитан</span>
                     <a
