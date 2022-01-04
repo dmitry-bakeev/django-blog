@@ -43,7 +43,9 @@ class Post(CreatedAtModel):
         return f"{self.blog} / {self.title} / {self.created_at.strftime('%d.%m.%Y')}"
 
     def check_read(self, user):
-        user_subscription = Subscription.objects.filter(user=user).prefetch_related('read_posts').first()
+        from .services import get_user_subscription
+
+        user_subscription = get_user_subscription(user)
 
         if self in user_subscription.read_posts.all():
             return True

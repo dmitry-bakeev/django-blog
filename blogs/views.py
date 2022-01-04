@@ -70,8 +70,8 @@ class SubscribeBlogView(LoginRequiredMixin, generic.View):
         blog_pk = request.POST.get('blog_pk')
         blog = get_object_or_404(Blog, pk=blog_pk)
 
-        subscription = Subscription.objects.filter(user=request.user).first()
-        subscription.blogs.add(blog)
+        user_subscription = get_user_subscription(self.request.user)
+        user_subscription.blogs.add(blog)
 
         return redirect(request.POST.get('back', '/'))
 
@@ -82,8 +82,8 @@ class UnsubscribeBlogView(LoginRequiredMixin, generic.View):
         blog_pk = request.POST.get('blog_pk')
         blog = get_object_or_404(Blog, pk=blog_pk)
 
-        subscription = Subscription.objects.filter(user=request.user).first()
-        unsubscribe_from_blog(subscription, blog)
+        user_subscription = get_user_subscription(self.request.user)
+        unsubscribe_from_blog(user_subscription, blog)
 
         return redirect(request.POST.get('back', '/'))
 
@@ -94,8 +94,8 @@ class ReadPostView(LoginRequiredMixin, generic.View):
         post_pk = request.POST.get('post_pk')
         post = get_object_or_404(Post, pk=post_pk)
 
-        subscription = Subscription.objects.filter(user=request.user).first()
-        subscription.read_posts.add(post)
+        user_subscription = get_user_subscription(self.request.user)
+        user_subscription.read_posts.add(post)
 
         return redirect(request.POST.get('back', '/'))
 
@@ -106,8 +106,8 @@ class UnreadPostView(LoginRequiredMixin, generic.View):
         post_pk = request.POST.get('post_pk')
         post = get_object_or_404(Post, pk=post_pk)
 
-        subscription = Subscription.objects.filter(user=request.user).first()
-        subscription.read_posts.remove(post)
+        user_subscription = get_user_subscription(self.request.user)
+        user_subscription.read_posts.remove(post)
 
         return redirect(request.POST.get('back', '/'))
 
@@ -133,8 +133,8 @@ class ReadPostListView(LoginRequiredMixin, generic.ListView):
         return context
 
     def get_queryset(self):
-        subscription = Subscription.objects.filter(user=self.request.user).first()
-        return subscription.read_posts.select_related('blog').all()
+        user_subscription = get_user_subscription(self.request.user)
+        return user_subscription.read_posts.select_related('blog').all()
 
 
 class PostDeleteView(LoginRequiredMixin, generic.DeleteView):
