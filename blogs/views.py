@@ -12,8 +12,11 @@ from .services import (
     get_user_subscription,
     get_user_subscriptions_blogs,
     get_user_subscriptions_posts,
-    unsubscribe_from_blog,
     get_user_subscriptions_unread_posts,
+    subscribe_to_blog,
+    unsubscribe_from_blog,
+    read_post,
+    unread_post,
 )
 
 
@@ -87,7 +90,7 @@ class SubscribeBlogView(LoginRequiredMixin, generic.View):
         blog = get_object_or_404(Blog, pk=blog_pk)
 
         user_subscription = get_user_subscription(self.request.user)
-        user_subscription.blogs.add(blog)
+        subscribe_to_blog(user_subscription, blog)
 
         return redirect(request.POST.get('back', '/'))
 
@@ -111,7 +114,7 @@ class ReadPostView(LoginRequiredMixin, generic.View):
         post = get_object_or_404(Post, pk=post_pk)
 
         user_subscription = get_user_subscription(self.request.user)
-        user_subscription.read_posts.add(post)
+        read_post(user_subscription, post)
 
         return redirect(request.POST.get('back', '/'))
 
@@ -123,7 +126,7 @@ class UnreadPostView(LoginRequiredMixin, generic.View):
         post = get_object_or_404(Post, pk=post_pk)
 
         user_subscription = get_user_subscription(self.request.user)
-        user_subscription.read_posts.remove(post)
+        unread_post(user_subscription, post)
 
         return redirect(request.POST.get('back', '/'))
 

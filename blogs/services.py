@@ -33,13 +33,25 @@ def get_user_subscriptions_unread_posts(user_subscription, posts_qs):
     return posts_qs.exclude(id__in=read_posts_ids)
 
 
-def unsubscribe_from_blog(subscription, blog):
+def subscribe_to_blog(user_subscription, blog):
+    user_subscription.blogs.add(blog)
+
+
+def unsubscribe_from_blog(user_subscription, blog):
     posts = blog.post_set.all()
 
-    subscription.blogs.remove(blog)
+    user_subscription.blogs.remove(blog)
 
     for post in posts:
-        subscription.read_posts.remove(post)
+        user_subscription.read_posts.remove(post)
+
+
+def read_post(user_subscription, post):
+    user_subscription.read_posts.add(post)
+
+
+def unread_post(user_subscription, post):
+    user_subscription.read_posts.remove(post)
 
 
 def send_html_email(post):
